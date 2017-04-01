@@ -23,7 +23,7 @@
           </button>
           <%#=  link_to "PRODUCTS",products_path%>
           <div class="navbar-brand">
-            <%= link_to(root_path) do %>
+            <%= link_to home_path do %>
               <%= image_tag("home.jpeg", :id => "logo", :alt => "logo") %><span>Check it out!</span>
             <% end %>
           </div>
@@ -74,15 +74,20 @@
 
 
           <ul class="nav navbar-nav navbar-right">
-            <li><%=  link_to "PRODUCTS",products_path%></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><%=link_to("About", about_path)%></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
+            <% if user_signed_in? %>
+              <li><%=  link_to "PRODUCTS",products_path%></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><%=link_to("About", about_path)%></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><%= link_to('Logout', destroy_user_session_path, :method => :delete) %> </li>
+            <% else %>
+              <li><%= link_to('Login', new_user_session_path) %></li>
+            <% end %>
+                 
               </ul>
             </li>
           </ul>
@@ -94,18 +99,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     <div class="container">
+      <% if flash[:notice] %>
+        <div class="notice alert alert-success fadeout" role="alert"><%= flash[:notice] %></div>
+      <% end %>
+      <% if flash[:alert ] %>
+        <div class="notice alert alert-danger fadeout" role="alert"><%= flash[:alert ] %></div>
+      <% end %>
 
       <%= yield %>
     </div>
